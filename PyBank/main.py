@@ -18,6 +18,12 @@ total = 0
 average = []
 max_month = 0
 min_month = 0
+greatest = 0
+gmonth = 0
+lowest = 0
+lmonth = 0
+
+f = open("results.txt","w+")
 
 with open(bank_csv) as csvfile:
     budgetcsv = csv.reader(csvfile,delimiter = ',')
@@ -29,17 +35,32 @@ with open(bank_csv) as csvfile:
         total = total + int(totals)
         average.append(int(row[1]))
         
-        for value in budgetcsv:
-            if max(average) == value:
-                max_month = value[0]
-            elif min(average) == value:
-                min_month = value(0)
+        if int(row[1]) > greatest:
+            greatest = int(row[1])
+            gmonth = row[0]
+        elif int(row[1]) < lowest:
+            lowest = int(row[1])
+            lmonth = row[0]
+        
+        
 
+print("Financial Analysis")
+print("--------------------------------------------------")
+print("Total months:", count)
+print("Total amount:", total)
+print("Average change:", round(statistics.mean(average)))
+print("Greatest increase in profits:", gmonth, "(" + str(greatest) + ")")
+print("Greatest decrease in profits:", lmonth, "(" + str(lowest) + ")")
 
-print(count)
-print(total)
-print(round(statistics.mean(average)))
-print(max(average))
-print(min(average))
-print(max_month)
-print(min_month)
+f.write("Financial Analysis\n")
+f.write("-------------------------------------------------\n")
+f.write("Total months: %i\n"%count)
+f.write("Total amount: %i\n"%total)
+f.write("Average change: %i\n"%round(statistics.mean(average)))
+f.write("Greatest increase in profits: %s"%gmonth)
+f.write("(%i"%greatest)
+f.write(")\n")
+f.write("Greatest decrease in profits: %s"%lmonth)
+f.write("(%i"%lowest)
+f.write(")")
+f.close
